@@ -76,14 +76,6 @@ public/             # Static assets
 - Use conventional commits
 - Keep dependencies updated
 
-## License
-
-MIT
-
----
-
-> Developed for CloudWalk's Quality Engineering Challenge, showcasing modern banking solutions with AI integration.
-
 ## User Synchronization
 
 To ensure local users are synchronized with the backend, use the script:
@@ -96,7 +88,11 @@ This command will download all users from the backend and update the `src/data/u
 
 ## How to Use the System
 
-### 1. Login
+### 3. Create a user
+
+- Use a handle to create a user.
+
+### 2. Login
 
 - Go to the login screen.
 - Use the following credentials to access a sample account:
@@ -104,7 +100,7 @@ This command will download all users from the backend and update the `src/data/u
   - **Password:** `125300`
 - Click "Enter".
 
-### 2. Make a Transfer via Chat
+### 3. Make a Transfer via Chat
 
 - After logging in, you will be redirected to the dashboard.
 - In the chat, send a transfer command. Examples:
@@ -114,3 +110,11 @@ This command will download all users from the backend and update the `src/data/u
 - Follow the on-screen instructions to complete the transfer.
 
 > **Tip:** The chat understands commands in both English and Portuguese, and accepts as recipient the ID, handle, email, or CPF.
+
+## License
+
+MIT
+
+---
+
+> Developed for CloudWalk's Quality Engineering Challenge, showcasing modern banking solutions with AI integration.
