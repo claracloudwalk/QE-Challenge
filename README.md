@@ -83,3 +83,34 @@ MIT
 ---
 
 > Developed for CloudWalk's Quality Engineering Challenge, showcasing modern banking solutions with AI integration.
+
+## User Synchronization
+
+To ensure local users are synchronized with the backend, use the script:
+
+```bash
+npm run sync-users
+```
+
+This command will download all users from the backend and update the `src/data/users.json` file.
+
+## How to Use the System
+
+### 1. Login
+
+- Go to the login screen.
+- Use the following credentials to access a sample account:
+  - **User ID:** `125300`
+  - **Password:** `125300`
+- Click "Enter".
+
+### 2. Make a Transfer via Chat
+
+- After logging in, you will be redirected to the dashboard.
+- In the chat, send a transfer command. Examples:
+  - In English: `transfer R$50 to 2955` or `pay 50 to clarawalk`
+  - In Portuguese: `transfira R$50 para 2955` or `transfira 50 para clarawalk`
+- The system will ask for the payment method. Choose one of the buttons (PIX, POS, Link, Card).
+- Follow the on-screen instructions to complete the transfer.
+
+> **Tip:** The chat understands commands in both English and Portuguese, and accepts as recipient the ID, handle, email, or CPF.
