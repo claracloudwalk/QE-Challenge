@@ -1,55 +1,85 @@
-# QE-Challenge
+# QE-Challenge 🚀
 
-> Banking dashboard and transfer platform with LLM integration
+> Next-Gen Banking Platform powered by LLM and Quality Engineering
 
-## Sobre
+## Overview
 
-Este projeto é um dashboard bancário moderno, com funcionalidades de transferência entre usuários, histórico de transações, integração com métodos de pagamento (PIX, POS, Link, Cartão) e comprovante em PDF. O sistema é integrado a LLM para automação e respostas inteligentes.
+This project represents a cutting-edge banking dashboard that seamlessly integrates Large Language Models (LLM) with modern banking operations. Built with a strong focus on Quality Engineering principles, it demonstrates how AI can enhance financial services while maintaining robust testing and reliability standards.
 
-## Funcionalidades
+## Key Features
 
-- Login de usuário
-- Dashboard com saldo e histórico de transações
-- Transferência de valores entre contas (PIX, POS, Link, Cartão)
-- Geração de comprovante em PDF
-- Atualização em tempo real do histórico para pagador e destinatário
-- Interface moderna com React, Next.js e TailwindCSS
+### 🤖 AI-Powered Banking
+- **LLM Integration**: Intelligent transaction processing and customer support
+- **Smart Automation**: Automated responses and transaction categorization
+- **Natural Language Processing**: Enhanced user interaction through conversational interfaces
 
-## Como rodar localmente
+### 💳 Banking Operations
+- Secure user authentication and session management
+- Real-time transaction dashboard with balance tracking
+- Multi-payment method support (PIX, POS, Payment Links, Cards)
+- PDF receipt generation with professional formatting
+
+### 🎯 Quality Engineering Highlights
+- Comprehensive test coverage for critical banking operations
+- Automated testing pipeline integration
+- Performance optimization and monitoring
+- Security-first approach to financial transactions
+
+### 🎨 Modern Tech Stack
+- **Frontend**: React with Next.js for optimal performance
+- **Styling**: TailwindCSS for responsive and modern UI
+- **State Management**: Efficient local storage and real-time updates
+- **API Integration**: RESTful services with error handling
+
+## Getting Started
 
 ```bash
-# Instale as dependências
+# Clone the repository
+git clone https://github.com/yourusername/QE-Challenge.git
+
+# Install dependencies
 npm install
 
-# Rode o projeto em modo desenvolvimento
+# Start development server
 npm run dev
 ```
 
-Acesse em [http://localhost:3000](http://localhost:3000)
+Access the application at [http://localhost:3000](http://localhost:3000)
 
-## Estrutura de Pastas
+## Project Structure
 
 ```
 src/
   app/
-    dashboard/      # Página principal do dashboard
-    login/          # Página de login
-    transfer/       # Página de transferência
-    globals.css     # Estilos globais
-  services/         # Serviços de API e banco local
-  data/             # Dados de usuários (mock)
-public/             # Assets, vídeos, imagens, PDF de comprovante
+    dashboard/      # Main banking dashboard
+    login/          # Authentication system
+    transfer/       # Payment processing
+    globals.css     # Global styles
+  services/         # API and local storage services
+  data/             # Mock user data
+public/             # Static assets
 ```
 
-## Limpeza e organização
+## Quality Engineering Practices
 
-- Arquivos de sistema como `.DS_Store` e pastas vazias foram removidos.
-- Não há arquivos duplicados ou não utilizados no repositório.
+- **Test Automation**: Comprehensive test suite for critical paths
+- **Code Quality**: Strict linting and code style enforcement
+- **Performance**: Optimized rendering and data handling
+- **Security**: Secure authentication and data encryption
+- **Monitoring**: Real-time error tracking and logging
 
-## Licença
+## Development Guidelines
+
+- Follow TypeScript best practices
+- Maintain test coverage above 80%
+- Document all API endpoints
+- Use conventional commits
+- Keep dependencies updated
+
+## License
 
 MIT
 
 ---
 
-> Feito para o desafio de Engenharia de Qualidade da CloudWalk.
+> Developed for CloudWalk's Quality Engineering Challenge, showcasing modern banking solutions with AI integration.
