@@ -232,32 +232,90 @@ export const api = {
   },
 
   async getUserInfo(identifier: string): Promise<UserResponse> {
-    // Se for número, busca direto pelo ID
-    if (/^\d+$/.test(identifier)) {
-      const res = await fetch(`${API_BASE_URL}/users/${identifier}`);
-      return res.json();
+    console.log('API: Buscando usuário com identificador:', identifier);
+    try {
+      // Se for número, busca direto pelo ID
+      if (/^\d+$/.test(identifier)) {
+        console.log('API: Buscando por ID:', identifier);
+        const res = await fetch(`${API_BASE_URL}/users/${identifier}`);
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('API: Erro ao buscar usuário por ID:', {
+            status: res.status,
+            statusText: res.statusText,
+            error: errorText
+          });
+          throw new Error(errorText || 'Usuário não encontrado');
+        }
+        const data = await res.json();
+        console.log('API: Usuário encontrado por ID:', data);
+        return data;
+      }
+
+      // Busca por handle, email, cpf, etc
+      console.log('API: Buscando por handle/email/cpf:', identifier);
+      const res = await fetch(`${API_BASE_URL}/users/search?query=${encodeURIComponent(identifier)}`);
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('API: Erro ao buscar usuário por query:', {
+          status: res.status,
+          statusText: res.statusText,
+          error: errorText
+        });
+        throw new Error(errorText || 'Usuário não encontrado');
+      }
+
+      const data = await res.json();
+      console.log('API: Resultado da busca:', data);
+
+      if (Array.isArray(data) && data.length > 0) {
+        console.log('API: Usuário encontrado na lista:', data[0]);
+        return data[0];
+      }
+      if (data && data.id) {
+        console.log('API: Usuário encontrado direto:', data);
+        return data;
+      }
+
+      console.error('API: Nenhum usuário encontrado para:', identifier);
+      throw new Error('Usuário não encontrado');
+    } catch (error) {
+      console.error('API: Erro na busca de usuário:', error);
+      throw error;
     }
-    // Busca por handle, email, cpf, etc
-    const res = await fetch(`${API_BASE_URL}/users/search?query=${encodeURIComponent(identifier)}`);
-    const data = await res.json();
-    if (Array.isArray(data) && data.length > 0) return data[0];
-    if (data && data.id) return data;
-    throw new Error('Usuário não encontrado');
   },
 
   async createUser(data: { handle: string }): Promise<UserResponse> {
-    const response = await fetch('https://qe-api.services.staging.cloudwalk.network/users/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const res = await response.json();
-    if (!response.ok) {
-      throw new Error(res.message || 'Erro ao criar usuário');
+    console.log('API: Criando novo usuário com handle:', data.handle);
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/new`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API: Erro ao criar usuário:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText
+        });
+        throw new Error(errorText || 'Failed to create user');
+      }
+
+      const result = await response.json();
+      console.log('API: Usuário criado com sucesso:', result);
+      console.log('Resposta bruta da API:', response);
+      console.log('Body da resposta:', result);
+      return result;
+    } catch (error) {
+      console.error('API: Erro na chamada createUser:', error);
+      throw error;
     }
-    return res;
   }
 };
 

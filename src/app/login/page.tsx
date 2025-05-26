@@ -32,10 +32,11 @@ export default function LoginPage() {
         return;
       }
       // Login OK
-      localStorage.setItem('userId', userInfo.id);
+      localStorage.setItem('userId', String(userInfo.id));
+      document.cookie = `user=${userInfo.id}; path=/;`;
       router.push('/dashboard');
-    } catch (e) {
-      setError('Erro ao fazer login');
+    } catch (e: any) {
+      setError(e.message || 'Erro ao fazer login');
     } finally {
       setLoading(false);
     }
@@ -49,20 +50,28 @@ export default function LoginPage() {
     setLoading(true);
     try {
       if (!newHandle) throw new Error("Digite um handle");
+      
+      console.log('Criando nova conta com handle:', newHandle);
       // Cria usuário
       const res = await api.createUser({ handle: newHandle });
       console.log('Resposta da API ao criar conta:', res);
-      if (!res || !res.id) {
-        // Se a API retornar erro, tente mostrar a mensagem
+
+      const userId = res.user_id || res.id; // compatível com ambos
+
+      if (!userId) {
+        console.error('Resposta da API ao criar conta:', res);
         if (res && res.message) throw new Error(res.message);
         if (res && res.error) throw new Error(res.error);
         throw new Error("Erro ao criar conta");
       }
-      setCreateMsg(`Conta criada! Seu id: ${res.id}`);
+
+      setCreateMsg(`Conta criada! Seu id: ${userId}`);
       // Login automático
-      localStorage.setItem('userId', res.id.toString());
+      localStorage.setItem('userId', String(userId));
+      document.cookie = `user=${userId}; path=/;`;
       router.push('/dashboard');
     } catch (err: any) {
+      console.error('Erro ao criar conta:', err);
       // Melhor tratamento de erros específicos
       if (err.message?.includes('handle has already been taken')) {
         setError('Este nome de usuário já está em uso. Por favor, escolha outro.');
@@ -98,23 +107,29 @@ export default function LoginPage() {
           {!showCreate ? (
             <>
               <form onSubmit={handleLogin} className="w-full flex flex-col gap-4 sm:gap-6">
-                <input
-                  type="text"
-                  placeholder="ID do usuário"
-                  value={user}
-                  onChange={e => setUser(e.target.value)}
-                  className="rounded-full border-2 border-white/30 px-4 py-3 sm:px-6 sm:py-4 bg-white/70 text-base sm:text-lg shadow font-medium placeholder-gray-500 backdrop-blur-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
-                  autoFocus
-                  disabled={loading}
-                />
-                <input
-                  type="password"
-                  placeholder="Senha (id)"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="rounded-full border-2 border-white/30 px-4 py-3 sm:px-6 sm:py-4 bg-white/70 text-base sm:text-lg shadow font-medium placeholder-gray-500 backdrop-blur-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
-                  disabled={loading}
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Handle ou ID do usuário"
+                    value={user}
+                    onChange={e => setUser(e.target.value)}
+                    className="w-full rounded-full border-2 border-white/30 px-4 py-3 sm:px-6 sm:py-4 bg-white/70 text-base sm:text-lg shadow font-medium placeholder-gray-500 backdrop-blur-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
+                    autoFocus
+                    disabled={loading}
+                  />
+                  <p className="text-white/60 text-xs mt-1 ml-4">Use seu handle (ex: clarawalk) ou ID</p>
+                </div>
+                <div className="relative">
+                  <input
+                    type="password"
+                    placeholder="Senha (seu ID)"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="w-full rounded-full border-2 border-white/30 px-4 py-3 sm:px-6 sm:py-4 bg-white/70 text-base sm:text-lg shadow font-medium placeholder-gray-500 backdrop-blur-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
+                    disabled={loading}
+                  />
+                  <p className="text-white/60 text-xs mt-1 ml-4">Use seu ID como senha</p>
+                </div>
                 {error && (
                   <div className="text-red-500 bg-white/80 rounded-xl px-4 py-2 text-center font-semibold shadow transition-all animate-pulse break-words text-sm sm:text-base">{error}</div>
                 )}
@@ -136,15 +151,18 @@ export default function LoginPage() {
             </>
           ) : (
             <form onSubmit={handleCreate} className="w-full flex flex-col gap-4 sm:gap-6">
-              <input
-                type="text"
-                placeholder="Novo handle (ex: clarawalk)"
-                value={newHandle}
-                onChange={e => setNewHandle(e.target.value)}
-                className="rounded-full border-2 border-white/30 px-4 py-3 sm:px-6 sm:py-4 bg-white/70 text-base sm:text-lg shadow font-medium placeholder-gray-500 backdrop-blur-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
-                autoFocus
-                disabled={loading}
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Novo handle (ex: clarawalk)"
+                  value={newHandle}
+                  onChange={e => setNewHandle(e.target.value)}
+                  className="w-full rounded-full border-2 border-white/30 px-4 py-3 sm:px-6 sm:py-4 bg-white/70 text-base sm:text-lg shadow font-medium placeholder-gray-500 backdrop-blur-2xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
+                  autoFocus
+                  disabled={loading}
+                />
+                <p className="text-white/60 text-xs mt-1 ml-4">Escolha um nome de usuário único</p>
+              </div>
               {createMsg && (
                 <div className="text-green-600 bg-white/80 rounded-xl px-4 py-2 text-center font-semibold shadow transition-all animate-pulse break-words text-sm sm:text-base">{createMsg}</div>
               )}
